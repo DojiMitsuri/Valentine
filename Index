@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will You Be My Valentine? 💖</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .card {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      animation: popIn 0.8s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #ff4d6d;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .yes {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    .no {
+      background: #eee;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .message {
+      display: none;
+      font-size: 1.4rem;
+      color: #ff4d6d;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .gif {
+      display: none;
+      max-width: 100%;
+      border-radius: 20px;
+      margin: 0 auto;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .heart {
+      position: absolute;
+      color: rgba(255,255,255,0.7);
+      font-size: 24px;
+      animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(100vh) scale(0.8); opacity: 1; }
+      to { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Hey Love ❤️</h1>
+    <p>I've been meaning to ask you something really special...</p>
+    <h2>Will you be my Valentine? 💌</h2>
+
+    <div class="buttons">
+      <button class="yes" onclick="sayYes()">Yes 💖</button>
+      <button class="no" id="noBtn">No 🙈</button>
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <img src="https://media.tenor.com/kRyOPyDON_AAAAAM/she-said-yes-happily.gif" 
+         alt="Celebration" class="gif" id="celebrationGif" />
+
+    <!-- Background music -->
+    <audio id="bgMusic" src="https://dojimitsuri.github.io/Valentine/Get%20you.mp3" autoplay loop></audio>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const gif = document.getElementById('celebrationGif');
+    const bgMusic = document.getElementById('bgMusic');
+
+    // Move No button randomly on hover
+    noBtn.addEventListener('mouseenter', () => {
+      const x = Math.random() * 300 - 100;
+      const y = Math.random() * 300 - 100;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    // Say Yes function
+    function sayYes() {
+      document.querySelector('.buttons').style.display = 'none';
+      const message = document.getElementById('message');
+      message.textContent = "";
+      message.style.display = 'block';
+      gif.style.display = 'block';
+      setTimeout(() => { gif.style.opacity = '1'; }, 50);
+      createHearts();
+      fadeInMusic();
+    }
+
+    // Hearts animation
+    function createHearts() {
+      for (let i = 0; i < 25; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerText = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = 3 + Math.random() * 3 + 's';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+      }
+    }
+
+    // Fade-in background music
+    function fadeInMusic(duration = 3000) {
+      bgMusic.volume = 0;
+      bgMusic.play();
+      let step = 0.01;
+      let interval = duration / (1/step);
+      let vol = 0;
+      const fade = setInterval(() => {
+        vol += step;
+        if (vol >= 1) {
+          bgMusic.volume = 1;
+          clearInterval(fade);
+        } else {
+          bgMusic.volume = vol;
+        }
+      }, interval);
+    }
+  </script>
+
+</body>
+</html>
